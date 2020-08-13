@@ -1,4 +1,4 @@
-FROM debian:buster-slim
+FROM debian:buster
 LABEL maintainer="Marcus Klein <himself@kleini.org>"
 
 ARG BUILD_DATE
@@ -18,9 +18,12 @@ ARG RUN_GID=0
 
 COPY . /tmp/motioneye
 
-RUN echo "deb http://snapshot.debian.org/archive/debian/20200630T024205Z sid main contrib non-free" >>/etc/apt/sources.list && \
-    apt-get update && \
-    DEBIAN_FRONTEND="noninteractive" apt-get -t stable --yes --option Dpkg::Options::="--force-confnew" --no-install-recommends install \
+
+#RUN echo "deb http://snapshot.debian.org/archive/debian/20200630T024205Z sid main contrib non-free" >>/etc/apt/sources.list
+
+RUN    apt-get update 
+    
+RUN   DEBIAN_FRONTEND="noninteractive" apt-get -t stable --yes --option Dpkg::Options::="--force-confnew" --no-install-recommends install \
       curl \
       ffmpeg \
       libmicrohttpd12 \
@@ -37,7 +40,7 @@ RUN echo "deb http://snapshot.debian.org/archive/debian/20200630T024205Z sid mai
       python-tz \
       python-wheel \
       v4l-utils && \
-    DEBIAN_FRONTEND="noninteractive" apt-get -t sid --yes --option Dpkg::Options::="--force-confnew" --no-install-recommends install \
+    DEBIAN_FRONTEND="noninteractive" apt-get --yes  --no-install-recommends install \
       motion \
       libmysqlclient20 && \
     # Change uid/gid of user/group motion to match our desired IDs.  This will
